@@ -93,5 +93,14 @@
       "collisionCalls": 0
     },
     "checks": "PASS"
+  },
+  "v03": {
+    "version": "0.3.0",
+    "node_regression_tests": 12,
+    "node_regression_result": "PASS",
+    "ui_event_harness": "PASS (jsdom; real Three.js objects; renderer stub)",
+    "svg_visual_review": "PASS (Mega close-up and overview)",
+    "browser_webgl_fullscreen_touch": "NOT VERIFIED",
+    "details": "V03_CHANGELOG_KO.md"
   }
 }

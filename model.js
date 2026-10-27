@@ -20,6 +20,7 @@ export function defaultState(){return {
    {uid:'P3',catalogId:'lipo2s',x:-110,y:353,z:0,ry:0},
    ...Array.from({length:4},(_,i)=>({uid:'B'+i,catalogId:'becuser',x:95,y:347,z:-100+i*65,ry:0}))
  ],
+ wiringLayout:{},
  wires:defaultWires(),
  nextId:5
 };}
@@ -74,6 +75,12 @@ export function validateProject(p){
   ids.add(part.id);
   return {...part,name:part.name.slice(0,120),type:Object.hasOwn(TYPES,part.type)?part.type:'other',mass:boundedNumber(part.mass,[0,100000],0),source:typeof part.source==='string'&&/^https:\/\//i.test(part.source)?part.source:''};
  });
+ out.wiringLayout={};
+ const nodeIds=new Set(['mega','pca','battery',...Array.from({length:4},(_,i)=>'bec'+i),...Array.from({length:12},(_,i)=>'servo'+i)]);
+ if(p.wiringLayout&&typeof p.wiringLayout==='object')for(const [id,pos] of Object.entries(p.wiringLayout))if(nodeIds.has(id)&&pos){
+  if(!Number.isFinite(pos.x)||!Number.isFinite(pos.y))throw Error('배선 부품 위치가 올바르지 않습니다');
+  out.wiringLayout[id]={x:boundedNumber(pos.x,[-1500,4000],0),y:boundedNumber(pos.y,[-1000,4000],0)};
+ }
  const uids=new Set();
  out.placedParts=p.placedParts.slice(0,300).map(part=>{
   if(!part||typeof part.uid!=='string'||!part.uid||uids.has(part.uid)||!ids.has(part.catalogId))throw Error('배치 부품의 ID가 중복되었거나 부품 정의가 없습니다');

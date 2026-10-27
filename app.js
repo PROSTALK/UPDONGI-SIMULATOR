@@ -3,8 +3,11 @@ import {clamp,calculateLegs,evaluateMechanics,evaluatePower,checkWires} from './
 import {generateArduino} from './codegen.js';
 import {RobotScene} from './scene.js';
 import {buildSchematic,portExists} from './wiring-ui.js';
+import {PORTS,canonicalPort,describePort} from './pinout.js';
+import {searchParts,relatedSearches,normalizeSearch} from './part-search.js';
 let state=defaultState();let scene;let currentTab='design',running=false,simT=0,lastT=0,selectedPart=null,selectedIds=[],marqueeMode=false,simActive=false,chosenId='droyuke30',pickedPort=null,wireSeq=1000,lastUi=0;
-let frameId=null,needsRefresh=true,pendingRebuild=false,wiringReport=null;
+let frameId=null,needsRefresh=true,pendingRebuild=false,wiringReport=null,wiringEditor=null,wiringVisited=false;
+let suggestionParts=[],suggestionIndex=-1,searchComposing=false;
 function requestFrame(){if(frameId===null&&!document.hidden)frameId=requestAnimationFrame(animate);}
 function invalidate(){needsRefresh=true;requestFrame();}
 const $=x=>document.getElementById(x);
@@ -67,6 +70,7 @@ function registerControls(){
  });
  $('resetBulk').addEventListener('click',()=>{for(const id of ['bulkX','bulkY','bulkZ','bulkRY'])$(id).value=0;});
  document.addEventListener('keydown',e=>{
+   if(e.key==='Escape'&&currentTab==='wiring'&&pickedPort){e.preventDefault();pickedPort=null;renderWires();return;}
    if(e.key==='Escape'){if(simActive){closeSimulation();return;}if(marqueeMode)setMarqueeMode(false);else setPartSelection([]);}
    if(simActive)return;
    if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
@@ -80,7 +84,20 @@ function registerControls(){
  $('help').addEventListener('click',()=>{$('helpModal').hidden=false});$('closeHelp').addEventListener('click',()=>{$('helpModal').hidden=true});$('okHelp').addEventListener('click',()=>{$('helpModal').hidden=true});
  $('exportProject').addEventListener('click',()=>download('quadlab-project.json',JSON.stringify(state,null,2),'application/json'));
  $('loadProject').addEventListener('change',async e=>{let f=e.target.files?.[0];if(!f)return;try{if(f.size>2*1024*1024)throw Error('프로젝트 JSON은 2MB 이하여야 합니다');const loaded=validateProject(JSON.parse(await f.text()));state=loaded;pickedPort=null;chosenId=catalog(state).some(p=>p.id===chosenId)?chosenId:'droyuke30';running=false;simT=0;lastT=0;selectedPart=null;selectedIds=[];scene.syncParts(state);scene.setSelection([]);scene.rebuildRobot(state);populateControls();updateSelectionUI();renderWires();invalidate();toast('프로젝트 불러오기 완료')}catch(err){toast('프로젝트 형식 오류: '+err.message)}e.target.value=''});
- $('partSearch').addEventListener('input',renderParts);
+ $('partSearch').addEventListener('input',()=>{if(!searchComposing)renderParts();});
+ $('partSearch').addEventListener('compositionstart',()=>{searchComposing=true;});
+ $('partSearch').addEventListener('compositionend',()=>{searchComposing=false;renderParts();});
+ $('partSearch').addEventListener('focus',renderParts);
+ $('partSearch').addEventListener('keydown',e=>{
+  if(e.isComposing||searchComposing)return;
+  if(e.key==='Escape'){e.stopPropagation();closeSuggestions();return;}
+  if((e.key==='ArrowDown'||e.key==='ArrowUp')&&suggestionParts.length){
+   e.preventDefault();$('partSuggestions').hidden=false;$('partSearch').setAttribute('aria-expanded','true');
+   suggestionIndex=suggestionIndex<0?(e.key==='ArrowDown'?0:suggestionParts.length-1):(suggestionIndex+(e.key==='ArrowDown'?1:-1)+suggestionParts.length)%suggestionParts.length;
+   updateSuggestionFocus();
+  }else if(e.key==='Enter'&&!$('partSuggestions').hidden&&suggestionParts.length){e.preventDefault();selectSearchPart(suggestionParts[Math.max(0,suggestionIndex)].id,true);}
+ });
+ document.addEventListener('pointerdown',e=>{if(!e.target.closest('.part-search-wrap'))closeSuggestions();});
  $('addPart').addEventListener('click',addPart);
  $('createPart').addEventListener('click',createPart);
  $('applyServo').addEventListener('click',applyServo);
@@ -92,6 +109,19 @@ function registerControls(){
  $('removePart').addEventListener('click',()=>removeSelection());
  $('wireReset').addEventListener('click',()=>{state.wires=defaultWires();pickedPort=null;renderWires();toast('기준 배선 복원')});
  $('wireCancel').addEventListener('click',()=>{pickedPort=null;renderWires()});
+ $('wireClear').addEventListener('click',()=>{state.wires=[];pickedPort=null;renderWires();toast('모든 전선을 지웠습니다. 표준 배선 복구로 다시 연결할 수 있습니다.');});
+ $('wireLayoutReset').addEventListener('click',()=>{state.wiringLayout={};renderWires();wiringEditor.fit();});
+ $('wireFit').addEventListener('click',()=>wiringEditor.fit());
+ $('wireMega').addEventListener('click',()=>wiringEditor.focus('mega'));
+ $('wirePca').addEventListener('click',()=>wiringEditor.focus('pca'));
+ $('wireZoomIn').addEventListener('click',()=>wiringEditor.setZoom(wiringEditor.zoom*1.2));
+ $('wireZoomOut').addEventListener('click',()=>wiringEditor.setZoom(wiringEditor.zoom/1.2));
+ $('wireFullscreen').addEventListener('click',async()=>{
+  try{if(document.fullscreenElement)await document.exitFullscreen();else await $('viewport').requestFullscreen();}
+  catch{toast('이 브라우저에서는 전체화면을 사용할 수 없습니다.');}
+ });
+ document.addEventListener('fullscreenchange',()=>{$('wireFullscreen').textContent=document.fullscreenElement?'전체화면 종료':'전체화면';wiringEditor?.syncView();});
+ $('wirePinSearch').addEventListener('input',renderPinMatches);
  $('downloadIno').addEventListener('click',()=>{download('quadruped_crawl_mega.ino',generateArduino(state));toast('Arduino 스케치 내려받기 완료')});
  $('copyCode').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(generateArduino(state));toast('코드 복사 완료')}catch(e){$('codePreview').select();document.execCommand('copy');toast('코드를 선택했어요')}});
 }
@@ -162,13 +192,41 @@ function handleSceneEvent(uid,coords,angle,meta={kind:'pick'}){
    scene.syncParts(state);invalidate();
  }
 }
-function setTab(tab){if(simActive)closeSimulation();if(tab==='wiring'&&marqueeMode)setMarqueeMode(false);currentTab=tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id==='panel-'+tab));const wiring=tab==='wiring';$('wireHost').hidden=!wiring;$('renderHost').style.display=wiring?'none':'block';$('viewButtons').style.display=wiring?'none':'flex';$('modeBadge').textContent=wiring?'WIRING EDITOR':tab==='power'?'CIRCUIT ESTIMATE':tab==='code'?'FIRMWARE OUTPUT':'DESIGN · PAUSED';$('viewName').textContent=({design:'MECHANICAL WORKSPACE',parts:'COMPONENT LIBRARY',wiring:'CIRCUIT NETLIST',power:'POWER ANALYSIS',code:'FIRMWARE WORKBENCH'})[tab];if(wiring)renderWires();if(tab==='code')updateCode();if(tab==='parts')renderPlaced();scene.resize();invalidate();}
-function renderParts(){let q=$('partSearch').value.trim().toLowerCase(),arr=catalog(state).filter(p=>(p.name+' '+p.brand+' '+p.type).toLowerCase().includes(q));$('partList').innerHTML=arr.map(p=>`<button class="part-row ${chosenId===p.id?'selected':''}" data-id="${safeText(p.id)}"><span>${safeText(p.name)}<br><small>${safeText(p.brand)}</small></span><small>${safeText(TYPES[p.type]||p.type)}</small></button>`).join('');document.querySelectorAll('.part-row').forEach(b=>b.onclick=()=>{chosenId=b.dataset.id;renderParts()});let chosen=catalog(state).find(p=>p.id===chosenId);$('partDetail').innerHTML=chosen?`<b>${safeText(chosen.name)}</b><br>확인 수준: ${safeText(chosen.verified)}<br>크기 X/Y/Z: ${chosen.dim.map(fmt0).join(' × ')} mm<br>질량: ${fmt(chosen.mass,0)}g<br>${safeText(chosen.notes)}${chosen.spec?`<br><b>해석 프로파일:</b> ${safeText(JSON.stringify(chosen.spec))}`:''}${chosen.source?`<br><a href="${safeText(chosen.source)}" rel="noopener noreferrer" target="_blank">공식/참고 자료 보기</a>`:''}`:'부품을 선택해 주세요.'; $('activeMotor').textContent='현재 서보 시뮬레이션: '+(catalog(state).find(x=>x.id===state.activeServoId)?.name||state.activeServoId)+' / 사양의 실측 여부 확인 필요';}
+function setTab(tab){if(simActive)closeSimulation();if(tab==='wiring'&&marqueeMode)setMarqueeMode(false);currentTab=tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id==='panel-'+tab));const wiring=tab==='wiring';$('wireHost').hidden=!wiring;$('wireToolbar').hidden=!wiring;$('wireHud').hidden=!wiring;$('viewport').classList.toggle('wiring-view',wiring);$('renderHost').style.display=wiring?'none':'block';$('viewButtons').style.display=wiring?'none':'flex';$('modeBadge').textContent=wiring?'WIRING EDITOR':tab==='power'?'CIRCUIT ESTIMATE':tab==='code'?'FIRMWARE OUTPUT':'DESIGN · PAUSED';$('viewName').textContent=({design:'MECHANICAL WORKSPACE',parts:'COMPONENT LIBRARY',wiring:'CIRCUIT NETLIST',power:'POWER ANALYSIS',code:'FIRMWARE WORKBENCH'})[tab];if(wiring){renderWires();if(!wiringVisited){wiringEditor.fit();wiringVisited=true;}}if(tab==='code')updateCode();if(tab==='parts')renderPlaced();scene.resize();invalidate();}
+function closeSuggestions(){
+ $('partSuggestions').hidden=true;$('partSearch').setAttribute('aria-expanded','false');$('partSearch').removeAttribute('aria-activedescendant');suggestionIndex=-1;
+}
+function updateSuggestionFocus(){
+ $('partSuggestions').querySelectorAll('[role="option"]').forEach((option,i)=>{const active=i===suggestionIndex;option.classList.toggle('active',active);option.setAttribute('aria-selected',String(active));});
+ if(suggestionIndex>=0)$('partSearch').setAttribute('aria-activedescendant','part-suggestion-'+suggestionIndex);
+}
+function selectSearchPart(id,setQuery=false){
+ chosenId=id;const part=catalog(state).find(p=>p.id===id);if(setQuery&&part)$('partSearch').value=part.name;
+ renderParts();closeSuggestions();
+}
+function renderParts(){
+ const parts=catalog(state),query=$('partSearch').value.trim(),arr=searchParts(parts,query);
+ if(!arr.some(p=>p.id===chosenId))chosenId=arr[0]?.id||null;
+ $('partResultCount').textContent=query?'검색 결과 '+arr.length+'개':'등록된 부품 '+arr.length+'개';
+ $('partList').innerHTML=arr.length?arr.map(p=>`<button class="part-row ${chosenId===p.id?'selected':''}" data-id="${safeText(p.id)}"><span>${safeText(p.name)}<br><small>${safeText(p.brand)}</small></span><small>${safeText(TYPES[p.type]||p.type)}</small></button>`).join(''):'<div class="no-part-result">등록된 부품에 검색 결과가 없습니다.<br>아래에서 제품명과 사양을 직접 등록할 수 있습니다.</div>';
+ $('partList').querySelectorAll('.part-row').forEach(b=>b.onclick=()=>selectSearchPart(b.dataset.id));
+ suggestionParts=query?arr.slice(0,6):[];suggestionIndex=-1;
+ $('partSuggestions').innerHTML=suggestionParts.map((p,i)=>`<button type="button" id="part-suggestion-${i}" role="option" aria-selected="false" data-suggest="${safeText(p.id)}"><span>${safeText(p.name)}</span><small>${safeText(TYPES[p.type]||p.type)}</small></button>`).join('');
+ const show=Boolean(query&&suggestionParts.length&&document.activeElement===$('partSearch'));
+ $('partSuggestions').hidden=!show;$('partSearch').setAttribute('aria-expanded',String(show));$('partSearch').removeAttribute('aria-activedescendant');
+ $('partSuggestions').querySelectorAll('[data-suggest]').forEach(b=>{b.onpointerdown=e=>e.preventDefault();b.onclick=()=>selectSearchPart(b.dataset.suggest,true);});
+ $('relatedSearches').replaceChildren();
+ for(const term of relatedSearches(query,parts)){const b=document.createElement('button');b.type='button';b.textContent=term;b.onclick=()=>{$('partSearch').value=term;$('partSearch').focus();renderParts();};$('relatedSearches').append(b);}
+ const chosen=parts.find(p=>p.id===chosenId);
+ $('addPart').disabled=!chosen;$('applyServo').disabled=!chosen||chosen.type!=='servo';$('applyBec').disabled=!chosen||chosen.type!=='power'||!chosen.spec?.limit;
+ $('partDetail').innerHTML=chosen?`<b>${safeText(chosen.name)}</b><br>확인 수준: ${safeText(chosen.verified)}<br>크기 X/Y/Z: ${chosen.dim.map(fmt0).join(' × ')} mm<br>질량: ${fmt(chosen.mass,0)}g<br>${safeText(chosen.notes)}${chosen.spec?`<br><b>해석 프로파일:</b> ${safeText(JSON.stringify(chosen.spec))}`:''}${chosen.source?`<br><a href="${safeText(chosen.source)}" rel="noopener noreferrer" target="_blank">공식/참고 자료 보기</a>`:''}`:'부품을 검색하거나 목록에서 선택해 주세요.';
+ $('activeMotor').textContent='현재 서보 시뮬레이션: '+(parts.find(x=>x.id===state.activeServoId)?.name||state.activeServoId)+' / 사양의 실측 여부 확인 필요';
+}
 function fmt0(x){return String(x)}
 function addPart(){let part=catalog(state).find(p=>p.id===chosenId);if(!part)return;let uid='P'+state.nextId++;state.placedParts.push({uid,catalogId:part.id,x:0,y:state.geometry.bodyH+70,z:0,ry:0});scene.syncParts(state);setPartSelection([uid]);invalidate();toast('부품을 배치했습니다. 축 핸들 또는 좌표로 이동하세요.')}
 function createPart(){let name=$('customName').value.trim();if(!name)return toast('제품명을 입력하세요.');const typ=$('customType').value;const spec=typ==='servo'?{voltage:Number($('customVoltage').value),stallTorque:Number($('customTorque').value),stallCurrent:Number($('customCurrent').value),idleCurrent:Number($('customIdle').value)}:typ==='power'?{voltage:Number($('customVoltage').value),limit:Number($('customCurrent').value),efficiency:Number($('customEff').value)}:null;
  const url=$('customSource').value.trim();if(url&&(!/^https:\/\//i.test(url)))return toast('참고 자료 URL은 https://로 시작해야 합니다.');
- const part={id:'custom-'+Date.now(),name,brand:'사용자 등록',type:typ,verified:'사용자 입력값 / 검증되지 않음',dim:['customX','customY','customZ'].map(k=>clamp(Number($(k).value)||20,1,2000)),mass:clamp(Number($('customMass').value)||0,0,50000),spec,source:url,notes:'사용자 등록 사양입니다. 실제 공식 자료로 검증하세요. 3D 외형은 아직 치수 기반 근사입니다.'};state.customParts.push(part);chosenId=part.id;renderParts();toast('사용자 부품을 등록했습니다. 구동 사양 적용 버튼을 누르세요.')}
+ const part={id:'custom-'+Date.now(),name,brand:'사용자 등록',type:typ,verified:'사용자 입력값 / 검증되지 않음',dim:['customX','customY','customZ'].map(k=>clamp(Number($(k).value)||20,1,2000)),mass:clamp(Number($('customMass').value)||0,0,50000),spec,source:url,notes:'사용자 등록 사양입니다. 실제 공식 자료로 검증하세요. 3D 외형은 아직 치수 기반 근사입니다.'};state.customParts.push(part);chosenId=part.id;$('partSearch').value='';renderParts();toast('사용자 부품을 등록했습니다. 구동 사양 적용 버튼을 누르세요.')}
 
 function applyServo(){const part=catalog(state).find(x=>x.id===chosenId);if(!part||part.type!=='servo'||!part.spec)return toast('구동 사양이 등록된 서보모터를 선택하세요.');
  const {voltage,stallTorque,stallCurrent,idleCurrent}=part.spec;
@@ -185,7 +243,7 @@ async function importSpec(e){const file=e.target.files?.[0];if(!file)return;
   const p=JSON.parse(await file.text());if(typeof p.name!=='string'||!p.name.trim()||!['servo','controller','power','other'].includes(p.type)||!Array.isArray(p.dim)||p.dim.length!==3||!p.dim.every(x=>Number.isFinite(x)&&x>0&&x<=5000))throw Error('필수 필드 name, type, dim이 잘못되었습니다.');
   const spec=p.spec&&typeof p.spec==='object'?p.spec:null;
   const part={id:'json-'+Date.now(),name:p.name.slice(0,120),brand:String(p.brand||'사용자 가져오기').slice(0,100),type:p.type,verified:'외부 JSON 입력값 / 제조사 검증 필요',dim:p.dim,mass:Number.isFinite(p.mass)?clamp(p.mass,0,100000):0,spec,source:typeof p.source==='string'&&/^https:\/\//.test(p.source)?p.source:'',notes:String(p.notes||'사용자 등록 JSON').slice(0,350)};
-  state.customParts.push(part);chosenId=part.id;renderParts();toast('제품 사양을 가져왔습니다. 적용 버튼을 누르세요.');
+  state.customParts.push(part);chosenId=part.id;$('partSearch').value='';renderParts();toast('제품 사양을 가져왔습니다. 적용 버튼을 누르세요.');
  }catch(err){toast('사양 JSON 오류: '+err.message)}e.target.value='';
 }
 
@@ -196,9 +254,36 @@ function updateCode(){
  try{$('codePreview').value=generateArduino(state);$('downloadIno').disabled=false;$('copyCode').disabled=false;}
  catch(error){$('codePreview').value='설정 오류: '+error.message;$('downloadIno').disabled=true;$('copyCode').disabled=true;}
 }
-function renderWires(){let report=wiringReport=checkWires(state.wires);buildSchematic($('wireSvg'),state.wires,pickedPort,choosePort,removeWire);$('wireSelect').textContent=pickedPort?`현재: ${pickedPort} → 두 번째 포트를 선택하세요`:'포트를 두 번 클릭하면 전선을 추가합니다. 선을 클릭하면 삭제됩니다.';$('wireResults').innerHTML=`<div class="info-line">연결 점검: ${report.good}/${report.total} 통과 · 위험 ${report.errors.length}건</div>`+[...report.errors,...report.missing,...report.checks.filter(x=>x.type==='ok').slice(0,5)].map(i=>`<div class="check-item ${i.type}"><i>${i.type==='ok'?'✓':'!'}</i>${safeText(i.title)}: ${safeText(i.detail)}</div>`).join('');$('wireList').innerHTML=state.wires.map(w=>`<div class="wire-item"><span>${safeText(w.a)} → ${safeText(w.b)}</span><button data-wire="${safeText(w.id)}" aria-label="전선 삭제">×</button></div>`).join('');$('wireList').querySelectorAll('[data-wire]').forEach(b=>b.onclick=()=>removeWire(b.dataset.wire));invalidate();}
-function choosePort(port){if(!portExists(port))return;if(!pickedPort){pickedPort=port;renderWires();return}if(pickedPort!==port&&!state.wires.some(w=>(w.a===pickedPort&&w.b===port)||(w.a===port&&w.b===pickedPort))){state.wires.push({id:'U'+wireSeq++,a:pickedPort,b:port});toast('전선 추가: '+pickedPort+' → '+port)}pickedPort=null;renderWires();invalidate()}
-function removeWire(id){state.wires=state.wires.filter(w=>w.id!==id);renderWires();invalidate()}
+function renderPinMatches(){
+ const query=normalizeSearch($('wirePinSearch').value);$('wirePinMatches').replaceChildren();if(!query)return;
+ const matches=PORTS.filter(p=>normalizeSearch(p.id+' '+p.label+' '+describePort(p.id)).includes(query)).slice(0,12);
+ if(!matches.length){$('wirePinMatches').textContent='일치하는 핀이 없습니다.';return;}
+ for(const p of matches){const b=document.createElement('button');b.type='button';b.textContent=describePort(p.id);b.onclick=()=>{choosePort(p.id);wiringEditor.focus(p.nodeId);};$('wirePinMatches').append(b);}
+}
+function renderWires(){
+ const report=wiringReport=checkWires(state.wires);
+ wiringEditor=buildSchematic($('wireSvg'),state.wires,pickedPort,choosePort,removeWire,{
+  layout:state.wiringLayout,
+  onMove:(id,position)=>{state.wiringLayout[id]=position;},
+  onHover:message=>{$('wireHover').textContent=message||(pickedPort?'연결 중: '+describePort(pickedPort):'핀 → 핀 연결 · 부품 드래그 · 휠 확대');},
+  onZoom:percent=>{$('wireZoomLabel').textContent=percent+'%';}
+ });
+ const message=pickedPort?'연결 중: '+describePort(pickedPort)+' → 두 번째 핀을 선택하세요':'실제 핀 위치를 확인하고 두 핀을 순서대로 선택하세요.';
+ $('wireSelect').textContent=message;$('wireHover').textContent=message;
+ $('wireResults').innerHTML=`<div class="info-line">연결 점검: ${report.good}/${report.total} 통과 · 위험 ${report.errors.length}건</div>`+[...report.errors,...report.missing,...report.checks.filter(x=>x.type==='ok').slice(0,5)].map(i=>`<div class="check-item ${i.type}"><i>${i.type==='ok'?'✓':'!'}</i>${safeText(i.title)}: ${safeText(i.detail)}</div>`).join('');
+ $('wireList').innerHTML=state.wires.map(w=>`<div class="wire-item"><span>${safeText(describePort(w.a))} → ${safeText(describePort(w.b))}</span><button data-wire="${safeText(w.id)}" aria-label="전선 삭제">×</button></div>`).join('');
+ $('wireList').querySelectorAll('[data-wire]').forEach(b=>b.onclick=()=>removeWire(b.dataset.wire));invalidate();
+}
+function choosePort(port){
+ if(!portExists(port))return;
+ if(!pickedPort){pickedPort=port;renderWires();return;}
+ if(pickedPort!==port&&!state.wires.some(w=>(canonicalPort(w.a)===canonicalPort(pickedPort)&&canonicalPort(w.b)===canonicalPort(port))||(canonicalPort(w.a)===canonicalPort(port)&&canonicalPort(w.b)===canonicalPort(pickedPort)))){
+  while(state.wires.some(w=>w.id==='U'+wireSeq))wireSeq++;
+  state.wires.push({id:'U'+wireSeq++,a:pickedPort,b:port});toast('전선 추가: '+describePort(pickedPort)+' → '+describePort(port));
+ }
+ pickedPort=null;renderWires();
+}
+function removeWire(id){state.wires=state.wires.filter(w=>w.id!==id);renderWires();}
 function diagnosticItems(legs,m,e,w){let arr=[];
  if(!w.valid){arr.push({type:'err',title:'배선 검사 실패',detail:`필수 연결 누락 ${w.missing.length}개, 회로상 심각한 위험 ${w.errors.filter(x=>x.type==='err').length}개. 전압 해석 결과는 실제 배선과 불일치할 수 있습니다.`});}
  arr.push(...w.errors.slice(0,2));

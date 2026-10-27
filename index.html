@@ -16,7 +16,7 @@
 <body>
 <div class="app">
   <aside class="sidebar">
-    <header class="brand"><div class="logo">Q<span>∕</span>L</div><div><strong>QUAD<span class="accent">//</span>LAB</strong><small>ROBOT ENGINEERING WORKSPACE</small></div><span class="version">BETA 0.2.1</span></header>
+    <header class="brand"><div class="logo">Q<span>∕</span>L</div><div><strong>QUAD<span class="accent">//</span>LAB</strong><small>ROBOT ENGINEERING WORKSPACE</small></div><span class="version">BETA 0.3</span></header>
     <div class="workspace"><div class="eyebrow">CURRENT PROJECT</div><strong>12-DOF Quadruped</strong><span>Arduino Mega · 2S LiPo · Crawl Gait</span></div>
     <nav class="tabs" aria-label="설계 기능">
       <button class="tab active" data-tab="design"><span>◈</span> 기구 · 보행</button>
@@ -49,7 +49,12 @@
       </section>
       <section class="panel" id="panel-parts">
         <div class="group-title">실제 부품 라이브러리 <span>검증 수준 표시</span></div>
-        <input id="partSearch" type="search" placeholder="부품명 / 제조사 검색" />
+        <label class="sr-only" for="partSearch">부품명 또는 관련 검색어</label>
+        <div class="part-search-wrap"><input id="partSearch" type="search" placeholder="예: 아두이노, 서보, ㅅㅂ, BEC" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="partSuggestions" aria-describedby="partSearchHint" />
+        <div id="partSuggestions" class="part-suggestions" role="listbox" aria-label="부품 자동완성" hidden></div></div>
+        <p class="hint" id="partSearchHint">등록 부품에서 이름·한글 별칭·초성으로 검색합니다.</p>
+        <div id="relatedSearches" class="related-searches" aria-label="연관 검색어"></div>
+        <div id="partResultCount" class="info-line" aria-live="polite"></div>
         <div class="part-list" id="partList"></div>
         <div class="group-title">선택된 부품 상세</div>
         <div class="part-detail" id="partDetail">부품을 선택해 주세요.</div>
@@ -83,9 +88,13 @@
       </section>
       <section class="panel" id="panel-wiring">
         <div class="group-title">배선도 편집 <span>포트 클릭 → 포트 클릭</span></div>
-        <p class="hint">그림에서 두 포트를 순서대로 누르면 전선을 추가합니다. 선을 클릭하면 삭제할 수 있습니다. 기본 배선은 <b>서보 전원 4계통 분리</b> 구조입니다.</p>
+        <p class="hint">실제 보드의 핀 배열을 참고한 배선 작업대입니다. <b>핀 → 핀</b>으로 연결하고 선을 눌러 삭제합니다. 부품을 드래그해 옮기고 휠로 확대할 수 있습니다.</p>
         <div id="wireSelect" class="info-line">연결할 첫 번째 포트를 선택하세요.</div>
-        <div class="two-btn"><button class="secondary" id="wireReset">표준 배선 복구</button><button class="secondary" id="wireCancel">선택 취소</button></div>
+        <label class="wide">핀 위치 찾기<input id="wirePinSearch" type="search" placeholder="예: D20, SDA, 5V, CH0, A0" /></label>
+        <div id="wirePinMatches" class="pin-matches" aria-live="polite"></div>
+        <div class="two-btn"><button class="secondary" id="wireReset">표준 배선 복구</button><button class="secondary" id="wireCancel">연결 취소 (Esc)</button></div>
+        <div class="two-btn"><button class="danger" id="wireClear">전선 모두 지우기</button><button class="secondary" id="wireLayoutReset">부품 위치 초기화</button></div>
+        <div class="hint">Mega의 중복 GND·SDA/SCL, PCA9685의 공통 V+·GND 연결을 검사에 반영합니다. 보드 외형은 설명용 벡터 그림이며 회로를 실행하거나 실물 Arduino를 제어하지 않습니다.</div>
         <div class="group-title">연결 검사</div>
         <div id="wireResults" class="checklist"></div>
         <p class="hint">PCA9685의 V+는 사용하지 않는 구성입니다. 각 서보의 신호는 PCA9685에서, 전원은 개별 BEC 배선에서 공급됩니다. Mega는 이 시험용 기본 구성에서 USB 5V 전원을 사용합니다.</p>
@@ -116,7 +125,9 @@
   </aside>
   <main class="main">
     <div class="topbar"><div><div class="crumb">SIMULATION <span> / </span> <strong id="viewName">MECHANICAL WORKSPACE</strong></div><h1>Quadruped Design Studio</h1></div><div class="top-actions"><button class="ghost" id="exportProject">↓ 프로젝트 저장</button><label class="btn-ghost">↑ 프로젝트 불러오기<input id="loadProject" type="file" accept=".json"></label></div></div>
-    <div class="workspace-area"><div class="viewport" id="viewport"><div id="renderHost"></div><div id="marqueeBox" hidden></div><div id="wireHost" hidden><svg id="wireSvg" viewBox="0 0 1540 1080" aria-label="회로 배선 편집기"></svg></div>
+    <div class="workspace-area"><div class="viewport" id="viewport"><div id="renderHost"></div><div id="marqueeBox" hidden></div><div id="wireToolbar" class="wire-toolbar" hidden><span class="wire-title">WIRING BENCH</span><button id="wireFit" class="secondary">전체 보기</button><button id="wireMega" class="secondary">Mega 확대</button><button id="wirePca" class="secondary">PCA9685 확대</button><button id="wireZoomOut" class="secondary" aria-label="배선 축소">−</button><output id="wireZoomLabel">60%</output><button id="wireZoomIn" class="secondary" aria-label="배선 확대">+</button><button id="wireFullscreen" class="secondary">전체화면</button></div>
+      <div id="wireHost" hidden><svg id="wireSvg" aria-label="실제 핀 배열 기반 배선 작업대"></svg></div>
+      <div id="wireHud" class="wire-hud" hidden><span id="wireHover">핀을 선택해 연결하세요 · 빈 곳을 드래그해 화면 이동</span><span class="wire-legend"><i class="power"></i>전원 <i class="ground"></i>GND <i class="signal"></i>신호</span></div>
       <div class="view-title"><span class="pill active-pill" id="modeBadge">DESIGN · PAUSED</span><span id="selectionLabel">4 Legs / 12 DOF</span></div>
       <div class="view-buttons" id="viewButtons"><button id="viewIso" title="전체 보기">⌖</button><button id="viewTop" title="위에서 보기">▣</button><button id="viewSide" title="측면 보기">◧</button><button id="viewGrid" title="그리드 표시">#</button></div>
       <div class="scale-note" id="viewportHint">설계 모드 · 왼쪽 드래그 카메라 회전 / 휠 확대 · 영역 선택 버튼으로 다중 선택</div>

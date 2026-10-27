@@ -1,3 +1,4 @@
+import {ALL_PIN_IDS,INTERNAL_LINKS,canonicalPort} from './pinout.js';
 export const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const RAD=180/Math.PI;const TORQUE_UNIT=98.0665; // 1 kgf cm = 98.0665 N mm
 export function calculateLegs(state,t){
@@ -116,9 +117,10 @@ export function evaluatePower(state,mechanics){
  const runtime=batteryI>0?(p.batCap/1000*.8/batteryI*60):Infinity;
  return {branchI,branchV,branchLoss,servoI,servoV,current,batteryV,batteryI,minV,maxV,rFeed,runtime,warnings};
 }
-const ALL_PINS=(()=>{let a=['battery.pos','battery.neg','mega.v5','mega.gnd','mega.sda','mega.scl','pca.vcc','pca.gnd','pca.sda','pca.scl','pca.vplus'];for(let i=0;i<4;i++)for(const k of ['inpos','inneg','outpos','outneg'])a.push(`bec${i}.${k}`);for(let i=0;i<12;i++){a.push(`pca.ch${i}`);for(const k of ['pos','neg','signal'])a.push(`servo${i}.${k}`)}return a})();
+const ALL_PINS=ALL_PIN_IDS;
 export function checkWires(wires){
  const errors=[],checks=[],adj=new Map(ALL_PINS.map(k=>[k,new Set()]));
+ for(const [a,b] of INTERNAL_LINKS){adj.get(a).add(b);adj.get(b).add(a);}
  for(const w of wires){if(!adj.has(w.a)||!adj.has(w.b)){errors.push({type:'err',title:'알 수 없는 포트',detail:`${w.a} — ${w.b}`});continue;}
   if(w.a===w.b)continue;adj.get(w.a).add(w.b);adj.get(w.b).add(w.a);
  }
@@ -136,7 +138,7 @@ export function checkWires(wires){
    req(`pca.ch${s}`,`servo${s}.signal`,`서보 ${s} PWM`);
   }
  }
- const posSupplies=['battery.pos','mega.v5',...Array.from({length:4},(_,i)=>`bec${i}.outpos`)];
+ const posSupplies=['battery.pos','mega.v5','mega.v33',...Array.from({length:4},(_,i)=>`bec${i}.outpos`)];
  const negative=['battery.neg','mega.gnd',...Array.from({length:4},(_,i)=>`bec${i}.outneg`)];
  for(let i=0;i<posSupplies.length;i++){
   for(let j=i+1;j<posSupplies.length;j++){
@@ -144,7 +146,14 @@ export function checkWires(wires){
   }
   for(let j=0;j<negative.length;j++)if(same(posSupplies[i],negative[j]))errors.push({type:'err',title:'전원 극성 단락 가능성',detail:`${posSupplies[i]} ↔ ${negative[j]} 전기적으로 연결됨`});
  }
- if(adj.get('pca.vplus').size)errors.push({type:'warn',title:'PCA9685 V+ 사용 감지',detail:'서보 전원을 4계통 분리한 구성에서 PCA V+를 연결하면 3핀 헤더의 공통 V+와 충돌 가능. 전력 배선을 확인하세요.'});
+ if(wires.some(w=>canonicalPort(w.a)==='pca.vplus'||canonicalPort(w.b)==='pca.vplus'))errors.push({type:'warn',title:'PCA9685 V+ 사용 감지',detail:'서보 전원을 4계통 분리한 구성에서 PCA V+를 연결하면 3핀 헤더의 공통 V+와 충돌 가능. 전력 배선을 확인하세요.'});
+ const signals=['mega.sda','mega.scl',...Array.from({length:16},(_,i)=>'pca.ch'+i)];
+ for(let i=0;i<signals.length;i++){
+  const signal=signals[i];
+  if([...posSupplies,...negative,'pca.vplus'].some(rail=>same(signal,rail)))errors.push({type:'err',title:'신호선과 전원 레일 직접 연결',detail:signal+' 이 전원 또는 GND에 직접 연결되어 있습니다.'});
+  for(let j=i+1;j<signals.length;j++)if(same(signal,signals[j]))errors.push({type:'err',title:'서로 다른 신호선 연결',detail:signal+' ↔ '+signals[j]+' 연결을 확인하세요.'});
+ }
+ if(negative.some(rail=>same('pca.vplus',rail)))errors.push({type:'err',title:'PCA9685 공통 V+ 단락',detail:'3핀 헤더의 공통 V+ 레일이 GND에 연결되어 있습니다.'});
  const missing=checks.filter(x=>x.type==='err');
  return {checks,errors,missing,valid:errors.filter(x=>x.type==='err').length===0&&missing.length===0,total:checks.length,good:checks.length-missing.length};
 }
