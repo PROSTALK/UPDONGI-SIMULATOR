@@ -1,0 +1,15 @@
+{
+  "name": "내가 구매한 서보 모델명",
+  "brand": "제조사명",
+  "type": "servo",
+  "dim": [40, 40, 20],
+  "mass": 70,
+  "spec": {
+    "voltage": 6.0,
+    "stallTorque": 30,
+    "stallCurrent": 3.5,
+    "idleCurrent": 0.12
+  },
+  "source": "https://example.com/datasheet",
+  "notes": "예제 형식임. 이 수치를 실제 모델의 공식 자료로 교체하세요."
+}

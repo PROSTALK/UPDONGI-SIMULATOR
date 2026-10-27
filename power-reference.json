@@ -1,0 +1,4826 @@
+[
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 0.5,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.75,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 0,
+        "wireAWG": 16,
+        "wireLen": 100,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 1,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 0,
+    "expected": {
+      "current": 2.314408015739311,
+      "batteryV": 7.8,
+      "batteryI": 2.0171483311971894,
+      "minV": 5.980455502723743,
+      "maxV": 5.98957764,
+      "rFeed": 0.027634000000000002,
+      "runtime": 78.52669907819258
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 2.2,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.8,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 25,
+        "wireAWG": 18,
+        "wireLen": 270,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 2,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 0.23,
+    "expected": {
+      "current": 5.284087742033487,
+      "batteryV": 7.683961536879184,
+      "batteryI": 4.641538524832649,
+      "minV": 5.932887324113518,
+      "maxV": 5.98617312,
+      "rFeed": 0.036313,
+      "runtime": 34.12661537818673
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 3.9,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.85,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 50,
+        "wireAWG": 20,
+        "wireLen": 440,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 3,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 0.46,
+    "expected": {
+      "current": 8.240633064573547,
+      "batteryV": 7.431270531173685,
+      "batteryI": 7.37458937652629,
+      "minV": 5.838119675518768,
+      "maxV": 5.979255288,
+      "rFeed": 0.0542952,
+      "runtime": 21.479162013304176
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 5.6,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.75,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 75,
+        "wireAWG": 22,
+        "wireLen": 610,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 4,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 0.6900000000000001,
+    "expected": {
+      "current": 11.423776564593771,
+      "batteryV": 7.015068585587787,
+      "batteryI": 10.465752192162842,
+      "minV": 5.636527749205147,
+      "maxV": 5.965833408,
+      "rFeed": 0.0896112,
+      "runtime": 15.135080316407263
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 7.3,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.8,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 100,
+        "wireAWG": 24,
+        "wireLen": 780,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 5,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 0.92,
+    "expected": {
+      "current": 14.149250823830975,
+      "batteryV": 6.502023568210523,
+      "batteryI": 12.979764317894764,
+      "minV": 5.193616841115616,
+      "maxV": 5.940670128,
+      "rFeed": 0.1563832,
+      "runtime": 12.203611415472256
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 9,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.85,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 125,
+        "wireAWG": 26,
+        "wireLen": 950,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 6,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 1.1500000000000001,
+    "expected": {
+      "current": 17.11107439304864,
+      "batteryV": 6.039232411680788,
+      "batteryI": 14.086140706553692,
+      "minV": 4.255826034751959,
+      "maxV": 5.894592,
+      "rFeed": 0.27941000000000005,
+      "runtime": 11.245095679493186
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 10.7,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.75,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 150,
+        "wireAWG": 16,
+        "wireLen": 1120,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 7,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 1.3800000000000001,
+    "expected": {
+      "current": 20.149844050225585,
+      "batteryV": 0,
+      "batteryI": 64.51285227225475,
+      "minV": 5.608611396854709,
+      "maxV": 5.979905592000001,
+      "rFeed": 0.0545008,
+      "runtime": 2.4553247054017424
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 12.4,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.8,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 175,
+        "wireAWG": 18,
+        "wireLen": 1290,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 8,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 1.61,
+    "expected": {
+      "current": 23.112488577083486,
+      "batteryV": 0,
+      "batteryI": 70.76139832290423,
+      "minV": 5.346952811933125,
+      "maxV": 5.97078744,
+      "rFeed": 0.07905100000000001,
+      "runtime": 2.238508618458557
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 14.1,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.85,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 200,
+        "wireAWG": 20,
+        "wireLen": 1460,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 9,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 1.84,
+    "expected": {
+      "current": 26.036273007833515,
+      "batteryV": 0,
+      "batteryI": 72.93923021638635,
+      "minV": 4.863799292883204,
+      "maxV": 5.954807112,
+      "rFeed": 0.1222068,
+      "runtime": 2.1716708488707663
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 15.799999999999999,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.75,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 225,
+        "wireAWG": 22,
+        "wireLen": 1630,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 2.0700000000000003,
+    "expected": {
+      "current": 29.08952680130425,
+      "batteryV": 0,
+      "batteryI": 67.214503876302,
+      "minV": 4.00806365579642,
+      "maxV": 5.926939584,
+      "rFeed": 0.19764959999999998,
+      "runtime": 2.356634221261395
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 17.5,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.8,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 250,
+        "wireAWG": 24,
+        "wireLen": 1800,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 11,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 2.3000000000000003,
+    "expected": {
+      "current": 29.67053570806962,
+      "batteryV": 0,
+      "batteryI": 45.39524353916009,
+      "minV": 2.497861992574884,
+      "maxV": 5.87881896,
+      "rFeed": 0.32819200000000004,
+      "runtime": 3.4893523561197917
+    }
+  },
+  {
+    "state": {
+      "geometry": {
+        "bodyL": 430,
+        "bodyW": 270,
+        "bodyH": 275,
+        "mass": 19.2,
+        "upper": 145,
+        "lower": 165,
+        "comX": 0,
+        "comZ": 0
+      },
+      "appearance": {
+        "body": "#344f63",
+        "links": "#8faec2",
+        "joints": "#5fd2dc",
+        "motors": "#58a8b4",
+        "stl": "#e5a66b"
+      },
+      "gait": {
+        "stride": 75,
+        "lift": 48,
+        "period": 2.8,
+        "duty": 0.85,
+        "speed": 1
+      },
+      "power": {
+        "batV": 7.8,
+        "batCap": 3300,
+        "batR": 275,
+        "wireAWG": 26,
+        "wireLen": 1970,
+        "contactR": 25,
+        "servoRatedV": 6,
+        "stallTorque": 30,
+        "stallCurrent": 3.5,
+        "idleCurrent": 0.12,
+        "becs": [
+          {
+            "voltage": 6,
+            "limit": 12,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          },
+          {
+            "voltage": 6,
+            "limit": 10,
+            "efficiency": 0.88
+          }
+        ]
+      },
+      "activeServoId": "droyuke30",
+      "calibration": {
+        "servoCenter": 135,
+        "servoMin": 95,
+        "servoMax": 175,
+        "pulseMin": 1000,
+        "pulseMax": 2000
+      },
+      "customParts": [],
+      "placedParts": [
+        {
+          "uid": "P1",
+          "catalogId": "mega2560",
+          "x": 0,
+          "y": 350,
+          "z": -70,
+          "ry": 0
+        },
+        {
+          "uid": "P2",
+          "catalogId": "pca9685",
+          "x": 0,
+          "y": 350,
+          "z": 65,
+          "ry": 0
+        },
+        {
+          "uid": "P3",
+          "catalogId": "lipo2s",
+          "x": -110,
+          "y": 353,
+          "z": 0,
+          "ry": 0
+        },
+        {
+          "uid": "B0",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -100,
+          "ry": 0
+        },
+        {
+          "uid": "B1",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": -35,
+          "ry": 0
+        },
+        {
+          "uid": "B2",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 30,
+          "ry": 0
+        },
+        {
+          "uid": "B3",
+          "catalogId": "becuser",
+          "x": 95,
+          "y": 347,
+          "z": 95,
+          "ry": 0
+        }
+      ],
+      "wires": [
+        {
+          "id": "W0",
+          "a": "battery.pos",
+          "b": "bec0.inpos"
+        },
+        {
+          "id": "W1",
+          "a": "battery.neg",
+          "b": "bec0.inneg"
+        },
+        {
+          "id": "W2",
+          "a": "bec0.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W3",
+          "a": "bec0.outpos",
+          "b": "servo0.pos"
+        },
+        {
+          "id": "W4",
+          "a": "bec0.outneg",
+          "b": "servo0.neg"
+        },
+        {
+          "id": "W5",
+          "a": "bec0.outpos",
+          "b": "servo1.pos"
+        },
+        {
+          "id": "W6",
+          "a": "bec0.outneg",
+          "b": "servo1.neg"
+        },
+        {
+          "id": "W7",
+          "a": "bec0.outpos",
+          "b": "servo2.pos"
+        },
+        {
+          "id": "W8",
+          "a": "bec0.outneg",
+          "b": "servo2.neg"
+        },
+        {
+          "id": "W9",
+          "a": "battery.pos",
+          "b": "bec1.inpos"
+        },
+        {
+          "id": "W10",
+          "a": "battery.neg",
+          "b": "bec1.inneg"
+        },
+        {
+          "id": "W11",
+          "a": "bec1.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W12",
+          "a": "bec1.outpos",
+          "b": "servo3.pos"
+        },
+        {
+          "id": "W13",
+          "a": "bec1.outneg",
+          "b": "servo3.neg"
+        },
+        {
+          "id": "W14",
+          "a": "bec1.outpos",
+          "b": "servo4.pos"
+        },
+        {
+          "id": "W15",
+          "a": "bec1.outneg",
+          "b": "servo4.neg"
+        },
+        {
+          "id": "W16",
+          "a": "bec1.outpos",
+          "b": "servo5.pos"
+        },
+        {
+          "id": "W17",
+          "a": "bec1.outneg",
+          "b": "servo5.neg"
+        },
+        {
+          "id": "W18",
+          "a": "battery.pos",
+          "b": "bec2.inpos"
+        },
+        {
+          "id": "W19",
+          "a": "battery.neg",
+          "b": "bec2.inneg"
+        },
+        {
+          "id": "W20",
+          "a": "bec2.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W21",
+          "a": "bec2.outpos",
+          "b": "servo6.pos"
+        },
+        {
+          "id": "W22",
+          "a": "bec2.outneg",
+          "b": "servo6.neg"
+        },
+        {
+          "id": "W23",
+          "a": "bec2.outpos",
+          "b": "servo7.pos"
+        },
+        {
+          "id": "W24",
+          "a": "bec2.outneg",
+          "b": "servo7.neg"
+        },
+        {
+          "id": "W25",
+          "a": "bec2.outpos",
+          "b": "servo8.pos"
+        },
+        {
+          "id": "W26",
+          "a": "bec2.outneg",
+          "b": "servo8.neg"
+        },
+        {
+          "id": "W27",
+          "a": "battery.pos",
+          "b": "bec3.inpos"
+        },
+        {
+          "id": "W28",
+          "a": "battery.neg",
+          "b": "bec3.inneg"
+        },
+        {
+          "id": "W29",
+          "a": "bec3.outneg",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W30",
+          "a": "bec3.outpos",
+          "b": "servo9.pos"
+        },
+        {
+          "id": "W31",
+          "a": "bec3.outneg",
+          "b": "servo9.neg"
+        },
+        {
+          "id": "W32",
+          "a": "bec3.outpos",
+          "b": "servo10.pos"
+        },
+        {
+          "id": "W33",
+          "a": "bec3.outneg",
+          "b": "servo10.neg"
+        },
+        {
+          "id": "W34",
+          "a": "bec3.outpos",
+          "b": "servo11.pos"
+        },
+        {
+          "id": "W35",
+          "a": "bec3.outneg",
+          "b": "servo11.neg"
+        },
+        {
+          "id": "W36",
+          "a": "mega.v5",
+          "b": "pca.vcc"
+        },
+        {
+          "id": "W37",
+          "a": "mega.gnd",
+          "b": "pca.gnd"
+        },
+        {
+          "id": "W38",
+          "a": "mega.sda",
+          "b": "pca.sda"
+        },
+        {
+          "id": "W39",
+          "a": "mega.scl",
+          "b": "pca.scl"
+        },
+        {
+          "id": "W40",
+          "a": "pca.ch0",
+          "b": "servo0.signal"
+        },
+        {
+          "id": "W41",
+          "a": "pca.ch1",
+          "b": "servo1.signal"
+        },
+        {
+          "id": "W42",
+          "a": "pca.ch2",
+          "b": "servo2.signal"
+        },
+        {
+          "id": "W43",
+          "a": "pca.ch3",
+          "b": "servo3.signal"
+        },
+        {
+          "id": "W44",
+          "a": "pca.ch4",
+          "b": "servo4.signal"
+        },
+        {
+          "id": "W45",
+          "a": "pca.ch5",
+          "b": "servo5.signal"
+        },
+        {
+          "id": "W46",
+          "a": "pca.ch6",
+          "b": "servo6.signal"
+        },
+        {
+          "id": "W47",
+          "a": "pca.ch7",
+          "b": "servo7.signal"
+        },
+        {
+          "id": "W48",
+          "a": "pca.ch8",
+          "b": "servo8.signal"
+        },
+        {
+          "id": "W49",
+          "a": "pca.ch9",
+          "b": "servo9.signal"
+        },
+        {
+          "id": "W50",
+          "a": "pca.ch10",
+          "b": "servo10.signal"
+        },
+        {
+          "id": "W51",
+          "a": "pca.ch11",
+          "b": "servo11.signal"
+        }
+      ],
+      "nextId": 5
+    },
+    "t": 2.5300000000000002,
+    "expected": {
+      "current": 30.01205234986649,
+      "batteryV": 7.461670802715281,
+      "batteryI": 1.2302879901262516,
+      "minV": 0,
+      "maxV": 5.796255840000001,
+      "rFeed": 0.552566,
+      "runtime": 128.75034241677434
+    }
+  }
+]

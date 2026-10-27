@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>QUAD//LAB — 사족보행 로봇 설계실</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+    {"imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }}
+  </script>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <header class="brand"><div class="logo">Q<span>∕</span>L</div><div><strong>QUAD<span class="accent">//</span>LAB</strong><small>ROBOT ENGINEERING WORKSPACE</small></div><span class="version">BETA 0.2.1</span></header>
+    <div class="workspace"><div class="eyebrow">CURRENT PROJECT</div><strong>12-DOF Quadruped</strong><span>Arduino Mega · 2S LiPo · Crawl Gait</span></div>
+    <nav class="tabs" aria-label="설계 기능">
+      <button class="tab active" data-tab="design"><span>◈</span> 기구 · 보행</button>
+      <button class="tab" data-tab="parts"><span>▤</span> 실제 부품</button>
+      <button class="tab" data-tab="wiring"><span>⌁</span> 배선 편집</button>
+      <button class="tab" data-tab="power"><span>ϟ</span> 전원 · 해석</button>
+      <button class="tab" data-tab="code"><span>⌘</span> Arduino 코드</button>
+    </nav>
+    <div class="sidebar-scroll">
+      <section class="panel active" id="panel-design">
+        <div class="group-title">로봇 기하학 <span>단위 mm</span></div>
+        <div class="field-grid"><label>몸통 길이<input id="bodyL" type="number" min="100" max="1500" step="10" value="430"></label><label>몸통 폭<input id="bodyW" type="number" min="70" max="1000" step="10" value="270"></label><label>몸통 높이<input id="bodyH" type="number" min="120" max="650" step="5" value="275"></label><label>몸통 질량 포함 총 질량 (kg)<input id="mass" type="number" min="0.1" max="100" step="0.1" value="3.5"></label><label>윗다리 길이<input id="upper" type="number" min="50" max="700" step="5" value="145"></label><label>아랫다리 길이<input id="lower" type="number" min="50" max="700" step="5" value="165"></label></div>
+        <div class="group-title">크롤 보행 <span>준정적 미리보기</span></div>
+        <div class="field-grid"><label>보폭 (mm)<input id="stride" type="number" min="0" max="200" step="5" value="75"></label><label>발 들기 (mm)<input id="lift" type="number" min="0" max="120" step="5" value="48"></label><label>주기 (초)<input id="period" type="number" min="0.5" max="10" step="0.1" value="2.8"></label><label>접지 비율<input id="duty" type="number" min="0.5" max="0.95" step="0.05" value="0.75"></label></div>
+        <label class="wide">무게중심 전후 위치 (mm)<input id="comX" type="range" min="-160" max="160" step="1" value="0"><output id="comXLabel">0 mm</output></label>
+        <label class="wide">무게중심 좌우 위치 (mm)<input id="comZ" type="range" min="-110" max="110" step="1" value="0"><output id="comZLabel">0 mm</output></label>
+        <div class="group-title">로봇 기본 색상 <span>3D 즉시 반영</span></div>
+        <div class="color-controls">
+          <label>몸통 <input type="color" id="bodyColor" value="#344f63" aria-label="몸통 색상"></label>
+          <label>다리 링크 <input type="color" id="linkColor" value="#8faec2" aria-label="다리 색상"></label>
+          <label>관절 <input type="color" id="jointColor" value="#5fd2dc" aria-label="관절 색상"></label>
+          <label>서보 외형 <input type="color" id="motorColor" value="#58a8b4" aria-label="서보 외형 색상"></label>
+        </div>
+        <div class="group-title">STL 모델 가져오기 <span>mm 가정</span></div>
+        <label class="file-drop">+ STL 파일 선택<input id="stlInput" type="file" accept=".stl" /></label>
+        <div class="hint">업로드한 STL은 모양만 불러옵니다. 회전축·밀도·재질·모터 특성은 자동으로 추론하지 않습니다.</div>
+        <div id="stlInfo" class="info-line">업로드된 모델 없음</div>
+        <div class="color-controls"><label>불러온 STL 색상 <input type="color" id="stlColor" value="#e5a66b"></label></div>
+        <button class="secondary full" id="clearStl">가져온 STL 제거</button>
+      </section>
+      <section class="panel" id="panel-parts">
+        <div class="group-title">실제 부품 라이브러리 <span>검증 수준 표시</span></div>
+        <input id="partSearch" type="search" placeholder="부품명 / 제조사 검색" />
+        <div class="part-list" id="partList"></div>
+        <div class="group-title">선택된 부품 상세</div>
+        <div class="part-detail" id="partDetail">부품을 선택해 주세요.</div>
+        <div class="two-btn"><button class="primary" id="addPart">선택 부품 3D 배치</button><button class="secondary" id="applyServo">서보 사양 적용</button></div>
+        <div class="two-btn"><select id="becTarget" aria-label="BEC 적용 대상"><option value="0">BEC 1</option><option value="1">BEC 2</option><option value="2">BEC 3</option><option value="3">BEC 4</option><option value="all">4개 모두</option></select><button class="secondary" id="applyBec">전원 사양 적용</button></div>
+        <div class="info-line" id="activeMotor">서보 구동 모델: DROYUKE (실측 사양 미확인)</div>
+        <div class="group-title">3D 부품 편집 <span>영역 선택 / 일괄 편집</span></div>
+        <p class="hint">3D 화면에서 <b>영역 선택</b>을 켜고 드래그하면 여러 부품을 선택할 수 있습니다. Shift+드래그는 선택에 추가합니다. 편집 모드에서는 마우스로 카메라 회전이 됩니다.</p>
+        <div class="two-btn"><button class="secondary" id="marqueeToggle">▧ 영역 선택 켜기</button><button class="secondary" id="selectAllParts">모든 부품 선택</button></div>
+        <div class="two-btn"><button class="secondary" id="clearSelection">선택 해제 (Esc)</button><button class="danger" id="removeSelected">선택 항목 삭제</button></div>
+        <div class="info-line" id="selectedCount">선택된 부품: 0개</div>
+        <div class="group-title">선택 부품 일괄 수정 <span>다중 선택 적용</span></div>
+        <div class="color-controls"><label>선택 부품 색상 <input type="color" id="selectionColor" value="#58b1a5"></label><button class="secondary" id="applySelectionColor">선택 항목에 적용</button></div>
+        <div class="field-grid"><label>이동 ΔX (mm)<input id="bulkX" type="number" step="5" value="0"></label><label>이동 ΔY (mm)<input id="bulkY" type="number" step="5" value="0"></label><label>이동 ΔZ (mm)<input id="bulkZ" type="number" step="5" value="0"></label><label>회전 ΔY (도)<input id="bulkRY" type="number" step="5" value="0"></label></div>
+        <div class="two-btn"><button class="primary" id="applyBulk">선택 항목 한꺼번에 이동</button><button class="secondary" id="resetBulk">이동값 초기화</button></div>
+        <div class="hint">여러 항목을 선택하면 3D 축 핸들로 함께 이동할 수도 있습니다. 회전 일괄 변경은 왼쪽 입력값으로 적용됩니다.</div>
+        <div class="group-title">3D 배치된 부품</div>
+        <select id="placedPart"></select>
+        <div class="field-grid" id="partPosition"><label>X (mm)<input id="partX" type="number" step="5"></label><label>Y (mm)<input id="partY" type="number" step="5"></label><label>Z (mm)<input id="partZ" type="number" step="5"></label><label>회전 Y (도)<input id="partRY" type="number" step="5"></label></div>
+        <div class="two-btn"><button class="secondary" id="partFocus">선택 부품 보기</button><button class="danger" id="removePart">부품 제거</button></div>
+        <div class="hint">기본 외형은 치수 기반 근사 상자입니다. 제조사 CAD 또는 STL을 불러와 교체해야 실제 형상 검증이 가능합니다.</div>
+        <div class="group-title">사용자 부품 직접 등록</div>
+        <div class="field-grid"><label>제품명<input id="customName" placeholder="모델명"></label><label>분류<select id="customType"><option value="servo">서보</option><option value="controller">보드</option><option value="power">전원 장치</option><option value="other">기타</option></select></label><label>크기 X (mm)<input id="customX" type="number" min="1" value="40"></label><label>크기 Y (mm)<input id="customY" type="number" min="1" value="20"></label><label>크기 Z (mm)<input id="customZ" type="number" min="1" value="40"></label><label>질량 (g)<input id="customMass" type="number" min="0" value="0"></label></div>
+        <label class="wide">참고 제조사/판매사 자료 URL<input id="customSource" type="url" placeholder="https://..." style="width:100%;margin-top:5px"></label>
+        <div class="group-title">전기 / 모터 사양 <span>선택 분류에 따라 사용</span></div>
+        <div class="field-grid"><label>작동/설정 전압 (V)<input id="customVoltage" type="number" min="0.1" max="100" step="0.1" value="6"></label><label>연속 전류 한도 또는 스톨 전류 (A)<input id="customCurrent" type="number" min="0.01" max="200" step="0.1" value="3.5"></label><label>스톨 토크 (kgf·cm, 서보만)<input id="customTorque" type="number" min="0.1" max="150" step="0.1" value="30"></label><label>무부하/대기 전류 (A, 서보만)<input id="customIdle" type="number" min="0" max="10" step="0.01" value="0.12"></label><label>BEC 효율 (0~1, 전원만)<input id="customEff" type="number" min="0.1" max="1" step="0.01" value="0.88"></label></div>
+        <button class="secondary full" id="createPart">새 부품 등록</button>
+        <div class="group-title">부품 사양 JSON 가져오기 <span>서버 전송 없음</span></div>
+        <label class="file-drop">+ 부품 사양 파일(JSON) 선택<input id="specInput" type="file" accept=".json,application/json"></label>
+        <p class="hint">JSON으로 제품명·크기·토크·전류·전압을 등록하고 '사양 적용'을 누르면 해석에 사용합니다. 값은 제조사 데이터시트와 대조하세요.</p>
+      </section>
+      <section class="panel" id="panel-wiring">
+        <div class="group-title">배선도 편집 <span>포트 클릭 → 포트 클릭</span></div>
+        <p class="hint">그림에서 두 포트를 순서대로 누르면 전선을 추가합니다. 선을 클릭하면 삭제할 수 있습니다. 기본 배선은 <b>서보 전원 4계통 분리</b> 구조입니다.</p>
+        <div id="wireSelect" class="info-line">연결할 첫 번째 포트를 선택하세요.</div>
+        <div class="two-btn"><button class="secondary" id="wireReset">표준 배선 복구</button><button class="secondary" id="wireCancel">선택 취소</button></div>
+        <div class="group-title">연결 검사</div>
+        <div id="wireResults" class="checklist"></div>
+        <p class="hint">PCA9685의 V+는 사용하지 않는 구성입니다. 각 서보의 신호는 PCA9685에서, 전원은 개별 BEC 배선에서 공급됩니다. Mega는 이 시험용 기본 구성에서 USB 5V 전원을 사용합니다.</p>
+        <div class="group-title">전선 항목</div>
+        <div id="wireList" class="wire-list"></div>
+      </section>
+      <section class="panel" id="panel-power">
+        <div class="callout warning">모터와 BEC의 수치는 <b>예제 가정값</b>입니다. 실제 DROYUKE 모델 또는 구매한 BEC의 데이터시트를 등록하기 전에는 안전성 판정에 사용하지 마세요.</div>
+        <div class="group-title">2S LiPo 설정</div>
+        <div class="field-grid"><label>무부하 전압 (V)<input id="batV" type="number" min="5" max="8.4" step="0.1" value="7.8"></label><label>용량 (mAh)<input id="batCap" type="number" min="100" max="50000" step="100" value="3300"></label><label>배터리 내부저항 (mΩ)<input id="batR" type="number" min="0" max="500" step="5" value="65"></label><label>동선 규격<select id="wireAWG"><option value="16">16 AWG</option><option value="18" selected>18 AWG</option><option value="20">20 AWG</option><option value="22">22 AWG</option><option value="24">24 AWG</option><option value="26">26 AWG</option></select></label><label>급전선 편도 길이 (mm)<input id="wireLen" type="number" min="10" max="10000" step="50" value="450"></label><label>접점 합산 저항 (mΩ)<input id="contactR" type="number" min="0" max="1000" step="5" value="25"></label></div>
+        <div class="group-title">서보 모델(임시 값)</div>
+        <div class="field-grid"><label>기준 전압 (V)<input id="servoRatedV" type="number" min="4.8" max="7.4" step="0.1" value="6"></label><label>스톨 토크 (kgf·cm)<input id="stallTorque" type="number" min="1" max="100" step="1" value="30"></label><label>스톨 전류 (A)<input id="stallCurrent" type="number" min="0.1" max="30" step="0.1" value="3.5"></label><label>대기 전류 (A)<input id="idleCurrent" type="number" min="0" max="2" step="0.02" value="0.12"></label></div>
+        <div class="group-title">독립 BEC 4개 <span>각 모터 3개</span></div>
+        <div id="becFields"></div>
+        <div class="group-title">근사 모델의 가정</div>
+        <p class="hint">서보 전류는 토크 수요에 대한 단순 선형 근사이며, 배터리 내부저항·배선 왕복 저항을 반영합니다. BEC의 전류 제한 동작, 배터리 방전곡선, 서보 제어기의 PID, 발 접촉 순간 충격은 실측 없이 정확히 예측할 수 없습니다.</p>
+      </section>
+      <section class="panel" id="panel-code">
+        <div class="callout">Arduino Mega + PCA9685 16채널을 가정하여 보행 명령 예제를 생성합니다. <b>실물 관절의 중심각·방향·펄스 범위는 반드시 개별 보정</b>해야 합니다.</div>
+        <div class="group-title">서보 채널 배치</div><div id="channels" class="channels"></div>
+        <div class="group-title">캘리브레이션 기본값</div>
+        <div class="field-grid"><label>중심각(°)<input id="servoCenter" type="number" min="0" max="270" value="135"></label><label>안전 최소각(°)<input id="servoMin" type="number" min="0" max="269" value="95"></label><label>안전 최대각(°)<input id="servoMax" type="number" min="1" max="270" value="175"></label><label>최소 펄스 (µs)<input id="pulseMin" type="number" min="400" max="1500" value="1000"></label><label>최대 펄스 (µs)<input id="pulseMax" type="number" min="1500" max="3000" value="2000"></label></div>
+        <div class="two-btn"><button class="primary" id="downloadIno">.ino 내려받기</button><button class="secondary" id="copyCode">코드 복사</button></div>
+        <textarea id="codePreview" rows="18" readonly spellcheck="false"></textarea>
+      </section>
+    </div>
+    <div class="side-footer"><span class="status-dot"></span> LOCAL BROWSER COMPUTE <button id="help" title="정보">ⓘ</button></div>
+  </aside>
+  <main class="main">
+    <div class="topbar"><div><div class="crumb">SIMULATION <span> / </span> <strong id="viewName">MECHANICAL WORKSPACE</strong></div><h1>Quadruped Design Studio</h1></div><div class="top-actions"><button class="ghost" id="exportProject">↓ 프로젝트 저장</button><label class="btn-ghost">↑ 프로젝트 불러오기<input id="loadProject" type="file" accept=".json"></label></div></div>
+    <div class="workspace-area"><div class="viewport" id="viewport"><div id="renderHost"></div><div id="marqueeBox" hidden></div><div id="wireHost" hidden><svg id="wireSvg" viewBox="0 0 1540 1080" aria-label="회로 배선 편집기"></svg></div>
+      <div class="view-title"><span class="pill active-pill" id="modeBadge">DESIGN · PAUSED</span><span id="selectionLabel">4 Legs / 12 DOF</span></div>
+      <div class="view-buttons" id="viewButtons"><button id="viewIso" title="전체 보기">⌖</button><button id="viewTop" title="위에서 보기">▣</button><button id="viewSide" title="측면 보기">◧</button><button id="viewGrid" title="그리드 표시">#</button></div>
+      <div class="scale-note" id="viewportHint">설계 모드 · 왼쪽 드래그 카메라 회전 / 휠 확대 · 영역 선택 버튼으로 다중 선택</div>
+      <div class="view-controls"><button class="play" id="playBtn">▶ 별도 실행 화면에서 구동</button><button class="ghost" id="resetBtn">↺ 자세 초기화</button><button class="secondary" id="marqueeViewport">▧ 영역 선택: 꺼짐</button><label>구동 속도 <input id="speed" type="range" min="0.25" max="2" step="0.25" value="1"><output id="speedLabel">1.00×</output></label></div>
+    </div>
+    <section class="telemetry"><div class="tile"><small>추정 소비전류</small><strong id="totalCurrent">— <span>A</span></strong><em id="currentCaption">4× BEC, 총 출력</em></div><div class="tile"><small>배터리 단자 전압</small><strong id="batteryVoltage">— <span>V</span></strong><em>배터리 내부저항 근사</em></div><div class="tile"><small>지지 안정성</small><strong id="stability">—</strong><em id="supportCount">접지 지점 —</em></div><div class="tile"><small>관절 피크 토크</small><strong id="peakTorque">— <span>kgf·cm</span></strong><em>정적 하중 균등분담 근사</em></div></section>
+    <section class="bottom-section"><div class="bottom-heading"><div><span class="eyebrow">ENGINEERING DIAGNOSTICS</span><h2>설계 검증 결과</h2></div><span id="issueCount" class="issue-pill">계산 중</span></div><div id="diagnostics" class="diagnostics"></div></section>
+    </div>
+    <div class="credits">정적·준정적 근사 시뮬레이션 · 실제 강체 동역학/정밀 회로 해석 아님 · 결제 연동 없음 · Three.js 무료 CDN 로딩</div>
+  </main>
+</div>
+<div class="simulation-overlay" id="simOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="simTitle">
+  <div class="sim-shell">
+    <header class="sim-head"><div><span class="eyebrow">SIMULATION MODE · INDEPENDENT VIEW</span><h2 id="simTitle">사족보행 구동 테스트</h2><small>준정적 크롤 보행 애니메이션 · 정적 지지 / 토크 / 전력 근사 (정밀 동역학 아님)</small></div><button id="simClose" class="ghost">✕ 설계 화면으로 돌아가기</button></header>
+    <div class="sim-area"><div id="simCanvas"></div><div class="sim-hud"><span id="simStatus">● 동작 중</span><span id="simClock">0.00 s</span><span id="simTelemetry">전류 — A · 안정성 —</span></div></div>
+    <footer class="sim-bar"><button id="simToggle" class="play">Ⅱ 일시정지</button><button id="simRestart" class="secondary">↺ 처음부터 다시 실행</button><button id="simStop" class="danger">■ 구동 종료</button><label>속도 <input id="simSpeed" type="range" min="0.25" max="2" step="0.25" value="1"><output id="simSpeedLabel">1.00×</output></label><span class="sim-warning">실제 하드웨어 작동 명령은 전송하지 않습니다.</span></footer>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="helpModal" class="modal" hidden><div class="modal-body"><button id="closeHelp" class="close">✕</button><h2>검증 범위와 한계</h2><p>이 앱은 유료 서버/유료 API/결제 SDK 없이 GitHub Pages에서 무료로 배포할 수 있는 클라이언트 기반 <b>설계 검토용 시제품</b>입니다. 12개 관절의 2링크 역기구학과 단계별 크롤 보행, 지지다각형, 준정적 토크 근사, 배선 연결 검사, 저항성 전압 강하를 계산합니다.</p><p>아직 완전한 3D 강체 동역학·마찰 접촉 솔버·SPICE 회로해석·모터 실측 특성·서보 제어기의 실제 전류제한 모델을 포함하지 않습니다. 이 앱에서 '정상'이어도 실제 제작 전에 별도 하드웨어 검증이 필요합니다.</p><p>GitHub Pages 자체는 서버 계산을 수행하지 않습니다. 사용자 업로드 STL/JSON은 서버에 자동 업로드하지 않습니다.</p><button class="primary" id="okHelp">확인</button></div></div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

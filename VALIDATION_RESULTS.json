@@ -1,0 +1,97 @@
+{
+  "model": {
+    "parityCases": 300,
+    "otherChecks": "PASS",
+    "powerBenchmark": {
+      "iterations": 20000,
+      "rounds": [
+        {
+          "baseline_ms": 163.93039800000003,
+          "optimized_ms": 39.20484899999997
+        },
+        {
+          "baseline_ms": 167.75121899999994,
+          "optimized_ms": 21.752523999999994
+        },
+        {
+          "baseline_ms": 165.964563,
+          "optimized_ms": 20.975663999999938
+        },
+        {
+          "baseline_ms": 163.950058,
+          "optimized_ms": 21.014080000000035
+        },
+        {
+          "baseline_ms": 159.75732699999992,
+          "optimized_ms": 21.068771999999854
+        }
+      ]
+    }
+  },
+  "baselineUI": {
+    "version": "baseline",
+    "harness": "jsdom + real Three.js objects/controls; renderer stub (no WebGL)",
+    "idle_120frames": {
+      "render": 120,
+      "legs": 120,
+      "power": 120,
+      "wiring": 120,
+      "collisionCalls": 9
+    },
+    "moving_120frames": {
+      "render": 120,
+      "legs": 120,
+      "power": 120,
+      "wiring": 120,
+      "collisionCalls": 9
+    },
+    "paused_120frames": {
+      "render": 120,
+      "legs": 120,
+      "power": 120,
+      "wiring": 120,
+      "collisionCalls": 9
+    },
+    "wiring_idle_120frames": {
+      "render": 120,
+      "legs": 120,
+      "power": 120,
+      "wiring": 120,
+      "collisionCalls": 9
+    },
+    "checks": "PASS"
+  },
+  "optimizedUI": {
+    "version": "quadruped-lab",
+    "harness": "jsdom + real Three.js objects/controls; renderer stub (no WebGL)",
+    "idle_120frames": {
+      "render": 0,
+      "legs": 0,
+      "power": 0,
+      "wiring": 0,
+      "collisionCalls": 0
+    },
+    "moving_120frames": {
+      "render": 120,
+      "legs": 120,
+      "power": 8,
+      "wiring": 0,
+      "collisionCalls": 8
+    },
+    "paused_120frames": {
+      "render": 0,
+      "legs": 0,
+      "power": 0,
+      "wiring": 0,
+      "collisionCalls": 0
+    },
+    "wiring_idle_120frames": {
+      "render": 0,
+      "legs": 0,
+      "power": 0,
+      "wiring": 0,
+      "collisionCalls": 0
+    },
+    "checks": "PASS"
+  }
+}
